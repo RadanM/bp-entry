@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+    composer:
+        image: composer:latest
+        volumes:
+            - ./:/app
+        working_dir: /app
+        command: composer install --ignore-platform-reqs
+
+    web:
+        image: web
+        build: .docker
+        volumes:
+            - ./:/var/www/html
+            - ./.docker/apache/sites-enabled:/etc/apache2/sites-enabled
+        ports:
+            - 8082:80
+        links:
+            - database
+
+    database:
+        image: mariadb:10.1
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: local
+            MYSQL_PASSWORD: local
+            MYSQL_DATABASE: local
+
+    adminer:
+        image: adminer:latest
+        ports:
+            - 8083:8080
