@@ -1,3 +1,7 @@
+extensions:
+    api: Apitte\Core\DI\ApiExtension
+    nextras.orm: Nextras\Orm\Bridges\NetteDI\OrmExtension
+
 parameters:
 
 
@@ -5,10 +9,6 @@ application:
 	errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
-
-extensions:
-    api: Apitte\Core\DI\ApiExtension
-    nextras.orm: Nextras\Orm\Bridges\NetteDI\OrmExtension
 
 api:
     debug: %debugMode%
@@ -19,14 +19,6 @@ nextras.orm:
 
 session:
 	expiration: 14 days
-
-
-di:
-	export:
-		parameters: no
-		tags: no
-		types:
-
 
 services:
 	router: App\Router\RouterFactory::createRouter

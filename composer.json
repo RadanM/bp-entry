@@ -17,11 +17,11 @@
 		"nette/mail": "^3.0",
 		"nette/robot-loader": "^3.0",
 		"nette/security": "^3.0",
-		"nette/utils": "^3.0",
+		"nette/utils": "3.0.3",
 		"latte/latte": "^2.5",
-		"tracy/tracy": "^2.6",
+		"tracy/tracy": "2.6.8",
 		"nextras/orm": "^3.1",
-		"apitte/core": "^0.6.0"
+		"apitte/fullstack": "^0.6.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"
