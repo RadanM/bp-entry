@@ -22,3 +22,6 @@ session:
 
 services:
 	router: App\Router\RouterFactory::createRouter
+
+includes:
+    - ../WebModule/config/common.neon
