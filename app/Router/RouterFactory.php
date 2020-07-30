@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Router;
 
-use Nette;
-use Nette\Application\Routers\RouteList;
-
+use Nette\Application\Routers\{Route, RouteList};
+use Nette\StaticClass;
 
 final class RouterFactory
 {
-	use Nette\StaticClass;
+	use StaticClass;
 
 	public static function createRouter(): RouteList
 	{
-		$router = new RouteList;
-		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
-		return $router;
+        $router = new RouteList();
+
+        $router[] = $admin = new RouteList('Admin');
+        $admin[] = new Route('admin/<presenter>/<action>', 'Admin:default');
+
+        $router[] = $web = new RouteList('Web');
+        $web[] = new Route('<presenter>/<action>', 'Homepage:default');
+
+        return $router;
 	}
 }
