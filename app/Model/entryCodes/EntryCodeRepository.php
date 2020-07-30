@@ -9,6 +9,6 @@ final class EntryCodeRepository extends Repository
 {
     static function getEntityClassNames(): array
     {
-        return [EntryCode::class]// TODO: Implement getEntityClassNames() method.;
+        return [EntryCode::class];
     }
 }
