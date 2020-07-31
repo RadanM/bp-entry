@@ -1,4 +1,5 @@
 extensions:
+    resource: Contributte\DI\Extension\ResourceExtension
     api: Apitte\Core\DI\ApiExtension
     nextras.orm: Nextras\Orm\Bridges\NetteDI\OrmExtension
 
@@ -9,6 +10,11 @@ application:
 	errorPresenter: Error
 	mapping:
 		*: App\*Module\Presenters\*Presenter
+
+resource:
+	resources:
+		App\ApiModule\:
+			paths: [%appDir%/ApiModule]
 
 api:
     debug: %debugMode%
