@@ -22,7 +22,9 @@
 		"tracy/tracy": "2.6.8",
 		"nextras/orm": "^3.1",
 		"apitte/fullstack": "^0.6.0",
-		"guzzlehttp/guzzle": "^7.0"
+		"guzzlehttp/guzzle": "^7.0",
+		"nextras/migrations": "^3.1",
+		"contributte/console": "^0.8.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"

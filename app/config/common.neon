@@ -1,7 +1,10 @@
 extensions:
     resource: Contributte\DI\Extension\ResourceExtension
     api: Apitte\Core\DI\ApiExtension
+    nextras.dbal: Nextras\Dbal\Bridges\NetteDI\DbalExtension
     nextras.orm: Nextras\Orm\Bridges\NetteDI\OrmExtension
+    nextras.migrations: Nextras\Migrations\Bridges\NetteDI\MigrationsExtension
+    console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
 
 parameters:
 
@@ -22,6 +25,11 @@ api:
 
 nextras.orm:
     model: App\Model\Model
+
+nextras.migrations:
+    dir: %appDir%/../migrations
+    driver: mysql
+    dbal: nextras
 
 session:
 	expiration: 14 days

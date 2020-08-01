@@ -1,0 +1,6 @@
+nextras.dbal:
+    driver: mysqli
+    host: database
+    dbname: local
+    user: local
+    password: local

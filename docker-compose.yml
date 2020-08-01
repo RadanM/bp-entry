@@ -31,3 +31,9 @@ services:
         image: adminer:latest
         ports:
             - 8083:8080
+
+    console:
+        image: web
+        entrypoint: bin/console
+        volumes:
+            - ./:/var/www/html
