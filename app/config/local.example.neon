@@ -1,6 +1,7 @@
 nextras.dbal:
     driver: mysqli
     host: database
-    dbname: local
-    user: local
+    database: local
+    username: local
     password: local
+    charset: UTF-8
