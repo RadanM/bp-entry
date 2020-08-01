@@ -28,6 +28,7 @@ session:
 
 services:
 	router: App\Router\RouterFactory::createRouter
+	- App\Model\facades\TestFacade
 
 includes:
     - ../WebModule/config/common.neon

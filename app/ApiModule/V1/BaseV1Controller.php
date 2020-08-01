@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace App\ApiModule\V1;
 
 use App\ApiModule\BaseController;
-use Apitte\Core\Annotation\Controller\{ControllerPath};
+use Apitte\Core\Annotation\Controller\{GroupPath, GroupId};
 
 /**
- * @ControllerPath("/v1")
+ * @GroupPath("/v1")
+ * @GroupId("/v1")
  */
 abstract class BaseV1Controller extends BaseController
 {

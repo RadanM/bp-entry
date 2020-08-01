@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\ApiModule;
 
 use Apitte\Core\UI\Controller\IController;
-use Apitte\Core\Annotation\Controller\{ControllerId, ControllerPath};
+use Apitte\Core\Annotation\Controller\{GroupPath, GroupId};
 
 /**
- * @ControllerPath("/api")
- * @ControllerId("api")
+ * @GroupPath("/api")
+ * @GroupId("api")
  */
 abstract class BaseController implements IController
 {

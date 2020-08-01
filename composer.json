@@ -21,7 +21,8 @@
 		"latte/latte": "^2.5",
 		"tracy/tracy": "2.6.8",
 		"nextras/orm": "^3.1",
-		"apitte/fullstack": "^0.6.0"
+		"apitte/fullstack": "^0.6.0",
+		"guzzlehttp/guzzle": "^7.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"
