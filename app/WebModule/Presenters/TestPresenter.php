@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace App\WebModule\Presenters;
 
-use App\WebModule\Components\{ITestStartFormFactory, TestStartForm};
+use App\ApiModule\ApiHelper;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
+use App\WebModule\Components\{IResultFormFactory, ITestStartFormFactory, ResultForm, TestStartForm};
 use Nette\Application\UI\Presenter;
 use Nette\Utils\Strings;
 
@@ -11,6 +15,9 @@ class TestPresenter extends Presenter
 {
 	/** @inject */
 	public ITestStartFormFactory $testStartFormFactory;
+
+	/** @inject */
+	public IResultFormFactory $resultFormFactory;
 
 	private ?string $email;
 
@@ -24,7 +31,14 @@ class TestPresenter extends Presenter
 
 	public function actionQuestion(string $code, string $email)
 	{
-
+		try {
+			(new Client())->request('GET', ApiHelper::getUri('test/check-code'), [
+				RequestOptions::QUERY => ["code" => $code, "email" => $email]
+			]);
+		} catch (GuzzleException $e) {
+			$this->flashMessage('Kombinace vstupního kódu a hesla je špatná.');
+			$this->presenter->redirect('Test:default', $email);
+		}
 	}
 
 	protected function createComponentTestStartForm(): TestStartForm
@@ -34,5 +48,10 @@ class TestPresenter extends Presenter
 			$this->redirect("Test:question", [$code, $email]);
 		};
 		return $form;
+	}
+
+	protected function createComponentResultForm(): ResultForm
+	{
+		return $this->resultFormFactory->create();
 	}
 }

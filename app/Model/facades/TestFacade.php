@@ -10,6 +10,7 @@ use App\Model\Question;
 use Nette\Mail\Mailer;
 use Nette\Mail\Message;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\Strings;
 use Nextras\Orm\Entity\IEntity;
 
 class TestFacade
@@ -50,7 +51,7 @@ class TestFacade
 	{
 		return $this->model->entryCodes->findBy([
 			'code' => $code,
-			'email' => $email,
+			'mail' => Strings::trim($email, '"'),
 		])->fetch();
 	}
 

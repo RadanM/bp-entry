@@ -52,4 +52,9 @@ class TestController extends BaseV1Controller
 		);
 		return $response->withStatus($entryCode ? IResponse::S200_OK : IResponse::S401_UNAUTHORIZED);
 	}
+
+	public function getQuestion()
+	{
+
+	}
 }
