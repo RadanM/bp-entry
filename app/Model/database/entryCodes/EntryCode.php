@@ -14,10 +14,10 @@ use Nextras\Orm\Entity\Entity;
 class EntryCode extends Entity
 {
 	/** @var int */
-	private const CODE_LENGHT = 5;
+	private const CODE_LENGHT = 6;
 
 	public function generateCode(): void
 	{
-		$this->code = Random::generate(self::CODE_LENGHT);
+		$this->code = Random::generate(self::CODE_LENGHT, '0-9');
 	}
 }

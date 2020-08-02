@@ -10,7 +10,7 @@ CREATE TABLE answers (
 CREATE TABLE entry_codes (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `mail` varchar(255) NOT NULL,
-    `code` varchar(5) NOT NULL,
+    `code` varchar(6) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE (mail),
     UNIQUE (code)
