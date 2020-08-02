@@ -4,7 +4,7 @@ CREATE TABLE answers (
     `text` varchar(255) NOT NULL,
     `right` tinyint(1) NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
+    CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE entry_codes (

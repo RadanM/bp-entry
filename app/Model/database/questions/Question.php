@@ -11,5 +11,6 @@ use Nextras\Orm\Entity\Entity;
  */
 class Question extends Entity
 {
-
+	/** @var int */
+	public const ANSWERS_COUNT = 4;
 }

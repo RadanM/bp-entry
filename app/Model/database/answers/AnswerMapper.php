@@ -7,5 +7,5 @@ use Nextras\Orm\Mapper\Mapper;
 
 class AnswerMapper extends Mapper
 {
-
+	protected $tableName = 'answers';
 }
