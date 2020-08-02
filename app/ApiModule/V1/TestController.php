@@ -7,6 +7,7 @@ use Apitte\Core\Http\{ApiRequest, ApiResponse};
 use App\Model\Facades\TestFacade;
 use Apitte\Core\Annotation\Controller\{ControllerPath, ControllerId, Id, Path, Method, RequestParameters,
 	RequestParameter};
+use Nette\Http\IResponse;
 
 /**
  * @ControllerPath("/test")
@@ -27,10 +28,28 @@ class TestController extends BaseV1Controller
 	 * @Method("GET")
 	 * @RequestParameters({
 	 	@RequestParameter(name="email", in="query", type="string", description="User e-mail")
-*	 })
+	 *	})
 	 */
 	public function checkEmail(ApiRequest $request, ApiResponse $response): string
 	{
 		return $this->testFacade->checkEmail($request->getParameter('email'))->mail;
+	}
+
+	/**
+	 * @Path("/check-code")
+	 * @Id("checkCode")
+	 * @Method("GET")
+	 * @RequestParameters({
+	 *   	@RequestParameter(name="code", in="query", type="string", description="User entry code"),
+	 *		@RequestParameter(name="email", in="query", type="string", description="User e-mail")
+	 *	})
+	 */
+	public function checkCode(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$entryCode = $this->testFacade->checkEntryCode(
+			$request->getParameter('code'),
+			$request->getParameter('email')
+		);
+		return $response->withStatus($entryCode ? IResponse::S200_OK : IResponse::S401_UNAUTHORIZED);
 	}
 }

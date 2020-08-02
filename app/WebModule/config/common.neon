@@ -1,2 +1,3 @@
 services:
     - App\WebModule\Components\ITestEntryFormFactory
+    - App\WebModule\Components\ITestStartFormFactory

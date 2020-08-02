@@ -7,6 +7,7 @@ use App\Model\EntryCode;
 use App\Model\Model;
 use Nette\Mail\Mailer;
 use Nette\Mail\Message;
+use Nextras\Orm\Entity\IEntity;
 
 class TestFacade
 {
@@ -33,12 +34,20 @@ class TestFacade
 		return $entryCode;
 	}
 
-	private function sendEmailWithEntryCode(EntryCode $entryCode)
+	private function sendEmailWithEntryCode(EntryCode $entryCode): void
 	{
 		$message = new Message();
 		$message->addTo($entryCode->mail)
 			->setFrom($this->mailSender)
 			->setBody("Váš vygenerovaný kód je: $entryCode->code");
 		$this->mailer->send($message);
+	}
+
+	public function checkEntryCode(string $code, string $email): ?IEntity
+	{
+		return $this->model->entryCodes->findBy([
+			'code' => $code,
+			'email' => $email,
+		])->fetch();
 	}
 }
