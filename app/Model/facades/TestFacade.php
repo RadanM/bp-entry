@@ -50,4 +50,9 @@ class TestFacade
 			'email' => $email,
 		])->fetch();
 	}
+
+	public function getQuestions(): array
+	{
+		return $this->model->questions->findAll()->fetchPairs('id');
+	}
 }

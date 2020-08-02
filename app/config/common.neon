@@ -40,3 +40,4 @@ services:
 
 includes:
     - ../WebModule/config/common.neon
+    - ../AdminModule/config/common.neon

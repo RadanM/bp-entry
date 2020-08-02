@@ -7,5 +7,5 @@ use Nextras\Orm\Mapper\Mapper;
 
 class QuestionMapper extends Mapper
 {
-
+	protected $tableName = 'questions';
 }

@@ -1,0 +1,18 @@
+{if $questions}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Otázka</th>
+            <th>Odpovědi</th>
+        </tr>
+        {foreach $questions as $question}
+            <tr>
+                <td>{$question->id}</td>
+                <td>{$question->text}</td>
+                <td><button>Zobrazit</button></td>
+            </tr>
+        {/foreach}
+    </table>
+{else}
+    <p>V databázi nejsou přidané žádné otázky.</p>
+{/if}
