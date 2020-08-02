@@ -5,6 +5,7 @@ namespace App\Model\Facades;
 
 use App\Model\EntryCode;
 use App\Model\Model;
+use App\Model\Question;
 use Nette\Mail\Mailer;
 use Nette\Mail\Message;
 use Nextras\Orm\Entity\IEntity;
@@ -54,5 +55,18 @@ class TestFacade
 	public function getQuestions(): array
 	{
 		return $this->model->questions->findAll()->fetchPairs('id');
+	}
+
+	public function recordQuestion(string $text, ?Question $question): void
+	{
+		$question = $question ?? new Question();
+		$question->text = $text;
+		$this->model->questions->persistAndFlush($question);
+	}
+
+	public function deleteQuestion(Question $question): void
+	{
+		$this->model->remove($question);
+		$this->model->flush();
 	}
 }

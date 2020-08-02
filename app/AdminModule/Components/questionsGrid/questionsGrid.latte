@@ -4,12 +4,14 @@
             <th>ID</th>
             <th>Otázka</th>
             <th>Odpovědi</th>
+            <th>Akce</th>
         </tr>
         {foreach $questions as $question}
             <tr>
                 <td>{$question->id}</td>
                 <td>{$question->text}</td>
-                <td><button>Zobrazit</button></td>
+                <td><a href="{plink default, $question->id}">Editovat</a></td>
+                <td><a href="{plink deleteQuestion! $question->id}">Smazat</a></td>
             </tr>
         {/foreach}
     </table>

@@ -1,2 +1,3 @@
 services:
     - App\AdminModule\Components\IQuestionsGridFactory
+    - App\AdminModule\Components\IQuestionFormFactory
