@@ -11,8 +11,12 @@ final class HomepagePresenter extends Presenter
     /** @inject */
     public ITestEntryFormFactory $testEntryFormFactory;
 
-    protected function createComponentTestEntryForm(): TestEntryForm
+	protected function createComponentTestEntryForm(): TestEntryForm
     {
-        return $this->testEntryFormFactory->create();
+        $form = $this->testEntryFormFactory->create();
+        $form->onSuccess[] = function (string $email) {
+			$this->redirect('Test:default', $email);
+		};
+        return $form;
     }
 }

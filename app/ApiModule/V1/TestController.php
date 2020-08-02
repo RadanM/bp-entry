@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace App\ApiModule\V1;
 
 use Apitte\Core\Http\{ApiRequest, ApiResponse};
-use App\Model\facades\TestFacade;
+use App\Model\Facades\TestFacade;
 use Apitte\Core\Annotation\Controller\{ControllerPath, ControllerId, Id, Path, Method, RequestParameters,
 	RequestParameter};
-use Nette\Http\IResponse;
 
 /**
  * @ControllerPath("/test")
@@ -30,8 +29,8 @@ class TestController extends BaseV1Controller
 	 	@RequestParameter(name="email", in="query", type="string", description="User e-mail")
 *	 })
 	 */
-	public function checkEmail(ApiRequest $request, ApiResponse $response)
+	public function checkEmail(ApiRequest $request, ApiResponse $response): string
 	{
-		return $request->getParameter('email');
+		return $this->testFacade->checkEmail($request->getParameter('email'))->mail;
 	}
 }

@@ -5,3 +5,11 @@ nextras.dbal:
     username: local
     password: local
     charset: UTF-8
+
+mail:
+    smtp: true
+    host: smtp.server.net
+    port: 587
+    username: no-reply@bepositive.cz
+    password: ******
+    secure: tls

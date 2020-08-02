@@ -7,7 +7,7 @@ extensions:
     console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
 
 parameters:
-
+    mailSender: BePositive <no-reply@bepositive.cz>
 
 application:
 	errorPresenter: Error
@@ -36,7 +36,7 @@ session:
 
 services:
 	router: App\Router\RouterFactory::createRouter
-	- App\Model\facades\TestFacade
+	- App\Model\Facades\TestFacade(%mailSender%)
 
 includes:
     - ../WebModule/config/common.neon

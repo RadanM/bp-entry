@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use Nette\Utils\Random;
 use Nextras\Orm\Entity\Entity;
 
 /**
@@ -12,5 +13,11 @@ use Nextras\Orm\Entity\Entity;
  */
 class EntryCode extends Entity
 {
+	/** @var int */
+	private const CODE_LENGHT = 5;
 
+	public function generateCode(): void
+	{
+		$this->code = Random::generate(self::CODE_LENGHT);
+	}
 }

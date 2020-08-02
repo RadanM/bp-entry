@@ -5,10 +5,10 @@ namespace App\Model;
 /**
  * Model
  *
- * @property-read AnswerRepository
- * @property-read EntryCodeRepository
- * @property-read QuestionRepository
- * @property-read ResultRepository
+ * @property-read AnswerRepository $amswers
+ * @property-read EntryCodeRepository $entryCodes
+ * @property-read QuestionRepository $questions
+ * @property-read ResultRepository $results
  */
 class Model extends \Nextras\Orm\Model\Model
 {

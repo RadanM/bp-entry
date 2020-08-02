@@ -7,5 +7,5 @@ use Nextras\Orm\Mapper\Mapper;
 
 class EntryCodeMapper extends Mapper
 {
-
+	protected $tableName = 'entry_codes';
 }

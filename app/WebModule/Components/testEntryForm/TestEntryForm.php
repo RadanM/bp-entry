@@ -11,7 +11,10 @@ use Nette\Utils\ArrayHash;
 
 class TestEntryForm extends Control
 {
-    protected function createComponentTestEntryForm(): Form
+	/** @var callable */
+	public $onSuccess;
+
+	protected function createComponentTestEntryForm(): Form
     {
         $form = new Form();
         $form->addEmail('email', 'Email')
@@ -26,6 +29,7 @@ class TestEntryForm extends Control
 		$response = (new Client())->request('GET', ApiHelper::getUri('test/check'), [
 			RequestOptions::QUERY => ["email" => $values->email]
 		]);
+		$this->onSuccess($response->getBody()->getContents());
     }
 
     public function render(): void
