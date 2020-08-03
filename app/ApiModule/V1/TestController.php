@@ -79,4 +79,23 @@ class TestController extends BaseV1Controller
 			->writeBody($next)
 			->withHeader('Content-Type', 'application/json');
 	}
+
+	/**
+	 * @Path("/result")
+	 * @Id("result")
+	 * @Method("GET")
+	 * @RequestParameters({
+	 *   	@RequestParameter(name="code", in="query", type="string", description="User entry code"),
+	 *		@RequestParameter(name="email", in="query", type="string", description="User e-mail")
+	 *	})
+	 */
+	public function getResult(ApiRequest $request, ApiResponse $response)
+	{
+		$code = $request->getParameter('code');
+		$mail = $request->getParameter('mail');
+		if (!$this->testFacade->checkEntryCode($code, $mail)) {
+			return $response->withStatus(IResponse::S401_UNAUTHORIZED);
+		}
+		return $this->testFacade->getCorrectAnswersCount($code);
+	}
 }

@@ -123,4 +123,9 @@ class TestFacade
 	{
 		return $this->model->results->findBy(['entry_code' => $entryCodeId])->count() < Question::QUESTIONS_COUNT;
 	}
+
+	public function getCorrectAnswersCount(string $entryCode): int
+	{
+		return $this->model->results->getCorrectAnswersCount($entryCode);
+	}
 }

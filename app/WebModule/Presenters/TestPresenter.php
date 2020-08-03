@@ -23,6 +23,7 @@ class TestPresenter extends Presenter
 	private ?string $email;
 	private ?string $code;
 	private ?Question $question;
+	private $resultCorrectCount;
 
 	/** @inject */
 	public TestFacade $testFacade;
@@ -47,6 +48,19 @@ class TestPresenter extends Presenter
 			$this->code = $code;
 			$this->email = $email;
 			$this->question = $this->testFacade->getQuestionEntity(Json::decode($response->getBody()->getContents()));
+		} catch (GuzzleException $e) {
+			$this->flashMessage('Kombinace vstupního kódu a hesla je špatná.');
+			$this->redirect('Test:default', $email);
+		}
+	}
+
+	public function actionResult(string $code, string $email): void
+	{
+		try {
+			$response = (new Client())->request('GET', ApiHelper::getUri('test/result'), [
+				RequestOptions::QUERY => ["code" => $code, "email" => $email]
+			]);
+			$this->resultCorrectCount = $response->getBody()->getContents();
 		} catch (GuzzleException $e) {
 			$this->flashMessage('Kombinace vstupního kódu a hesla je špatná.');
 			$this->redirect('Test:default', $email);
