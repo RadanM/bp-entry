@@ -7,5 +7,5 @@ use Nextras\Orm\Mapper\Mapper;
 
 class ResultMapper extends Mapper
 {
-
+	protected $tableName = 'results';
 }

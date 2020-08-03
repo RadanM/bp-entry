@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Facades;
 
-use App\Model\Answer;
-use App\Model\EntryCode;
-use App\Model\Model;
-use App\Model\Question;
-use Nette\Mail\Mailer;
-use Nette\Mail\Message;
-use Nette\Utils\ArrayHash;
-use Nette\Utils\Strings;
+use App\Model\{Answer, EntryCode, Model, Question, Result};
+use Nette\Mail\{Mailer, Message};
+use Nette\Utils\{ArrayHash, Strings};
 use Nextras\Orm\Entity\IEntity;
 
 class TestFacade
@@ -60,6 +55,30 @@ class TestFacade
 		return $this->model->questions->findAll()->fetchPairs('id');
 	}
 
+	public function getQuestionForTest(): array
+	{
+		return $this->model->questions->getRandomQuestion();
+	}
+
+	public function getQuestionEntity(array $dbRowData): ?Question
+	{
+		$result = [];
+		foreach ($dbRowData as $answer) {
+			if (!isset($question)) {
+				$question = new Question();
+				$question->id = $answer->question_id;
+				$question->text = $answer->question_text;
+			}
+			$entity = new Answer();
+			$entity->id = $answer->id;
+			$entity->right = $answer->right;
+			$entity->text = $answer->text;
+			$result[] = $entity;
+		}
+		$question->answers = $result;
+		return $question;
+	}
+
 	public function recordQuestion(ArrayHash $values, array $answers, ?Question $question): void
 	{
 		$question = $question ?? new Question();
@@ -86,5 +105,14 @@ class TestFacade
 		return $question ?
 			$this->model->answers->findBy(['question' => $question->id])->fetchPairs('id') :
 			range(1, Question::ANSWERS_COUNT);
+	}
+
+	public function saveAnswer(string $code, int $answerId, int $questionId): void
+	{
+		$result = new Result();
+		$result->entryCode = $this->model->entryCodes->findBy(['code' => $code])->fetch();
+		$result->answer = $this->model->answers->findById($answerId)->fetch();
+		$result->question = $this->model->questions->findById($questionId)->fetch();
+		$this->model->persistAndFlush($result);
 	}
 }

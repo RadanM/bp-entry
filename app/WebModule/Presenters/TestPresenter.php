@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace App\WebModule\Presenters;
 
 use App\ApiModule\ApiHelper;
-use GuzzleHttp\Client;
+use App\Model\Facades\TestFacade;
+use App\Model\Question;
+use GuzzleHttp\{Client, RequestOptions};
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RequestOptions;
 use App\WebModule\Components\{IResultFormFactory, ITestStartFormFactory, ResultForm, TestStartForm};
 use Nette\Application\UI\Presenter;
-use Nette\Utils\Strings;
+use Nette\Utils\{Json, Strings};
 
 class TestPresenter extends Presenter
 {
@@ -20,6 +21,11 @@ class TestPresenter extends Presenter
 	public IResultFormFactory $resultFormFactory;
 
 	private ?string $email;
+	private ?string $code;
+	private ?Question $question;
+
+	/** @inject */
+	public TestFacade $testFacade;
 
 	public function actionDefault(?string $email): void
 	{
@@ -29,15 +35,18 @@ class TestPresenter extends Presenter
 		$this->email = $email;
 	}
 
-	public function actionQuestion(string $code, string $email)
+	public function actionQuestion(string $code, string $email): void
 	{
 		try {
 			(new Client())->request('GET', ApiHelper::getUri('test/check-code'), [
 				RequestOptions::QUERY => ["code" => $code, "email" => $email]
 			]);
+			$response = (new Client())->request('GET', ApiHelper::getUri('test/question'));
+			$this->code = $code;
+			$this->question = $this->testFacade->getQuestionEntity(Json::decode($response->getBody()->getContents()));
 		} catch (GuzzleException $e) {
 			$this->flashMessage('Kombinace vstupního kódu a hesla je špatná.');
-			$this->presenter->redirect('Test:default', $email);
+			$this->redirect('Test:default', $email);
 		}
 	}
 
@@ -52,6 +61,22 @@ class TestPresenter extends Presenter
 
 	protected function createComponentResultForm(): ResultForm
 	{
-		return $this->resultFormFactory->create();
+		$form = $this->resultFormFactory->create($this->question);
+		$form->onSuccess[] = function (int $questionId, int $answerId) {
+			(new Client())->request('POST', ApiHelper::getUri('test/save-answer'), [
+				RequestOptions::JSON => [
+					"code" => $this->code,
+					"answer_id" => $answerId,
+					"question_id" => $questionId
+				]
+			]);
+			$this->redirect("this");
+		};
+		return $form;
+	}
+
+	public function renderQuestion(): void
+	{
+		$this->template->question = $this->question;
 	}
 }

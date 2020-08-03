@@ -30,7 +30,7 @@ class TestController extends BaseV1Controller
 	 	@RequestParameter(name="email", in="query", type="string", description="User e-mail")
 	 *	})
 	 */
-	public function checkEmail(ApiRequest $request, ApiResponse $response): string
+	public function checkEmail(ApiRequest $request): string
 	{
 		return $this->testFacade->checkEmail($request->getParameter('email'))->mail;
 	}
@@ -53,8 +53,29 @@ class TestController extends BaseV1Controller
 		return $response->withStatus($entryCode ? IResponse::S200_OK : IResponse::S401_UNAUTHORIZED);
 	}
 
-	public function getQuestion()
+	/**
+	 * @Path("/question")
+	 * @Id("getQuestion")
+	 * @Method("GET")
+	 * @RequestParameters({
+	 *   	@RequestParameter(name="code", in="query", type="string", description="User entry code"),
+	 *	})
+	 */
+	public function getQuestion(ApiRequest $request): array
 	{
+		return $this->testFacade->getQuestionForTest();
+	}
 
+	/**
+	 * @Path("/save-answer")
+	 * @Id("saveAnswer")
+	 * @Method("POST")
+	 */
+	public function saveAnswer(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$parameters = $request->getJsonBody();
+		$this->testFacade->saveAnswer($parameters['code'], $parameters['answer_id'], $parameters['question_id']);
+		return $response->withStatus(IResponse::S200_OK)
+			->withHeader('Content-Type', 'application/json');
 	}
 }
