@@ -63,7 +63,7 @@ class TestController extends BaseV1Controller
 	 */
 	public function getQuestion(ApiRequest $request): array
 	{
-		return $this->testFacade->getQuestionForTest();
+		return $this->testFacade->getQuestionForTest($request->getParameter('code'));
 	}
 
 	/**
@@ -74,8 +74,9 @@ class TestController extends BaseV1Controller
 	public function saveAnswer(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$parameters = $request->getJsonBody();
-		$this->testFacade->saveAnswer($parameters['code'], $parameters['answer_id'], $parameters['question_id']);
+		$next = $this->testFacade->saveAnswer($parameters['code'], $parameters['answer_id'], $parameters['question_id']);
 		return $response->withStatus(IResponse::S200_OK)
+			->writeBody($next)
 			->withHeader('Content-Type', 'application/json');
 	}
 }

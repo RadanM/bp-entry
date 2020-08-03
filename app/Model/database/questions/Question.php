@@ -15,4 +15,7 @@ class Question extends Entity
 {
 	/** @var int */
 	public const ANSWERS_COUNT = 4;
+
+	/** @var int */
+	public const QUESTIONS_COUNT = 10;
 }

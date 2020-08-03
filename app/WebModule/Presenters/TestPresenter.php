@@ -41,8 +41,11 @@ class TestPresenter extends Presenter
 			(new Client())->request('GET', ApiHelper::getUri('test/check-code'), [
 				RequestOptions::QUERY => ["code" => $code, "email" => $email]
 			]);
-			$response = (new Client())->request('GET', ApiHelper::getUri('test/question'));
+			$response = (new Client())->request('GET', ApiHelper::getUri('test/question'), [
+				RequestOptions::QUERY => ["code" => $code]
+			]);
 			$this->code = $code;
+			$this->email = $email;
 			$this->question = $this->testFacade->getQuestionEntity(Json::decode($response->getBody()->getContents()));
 		} catch (GuzzleException $e) {
 			$this->flashMessage('Kombinace vstupního kódu a hesla je špatná.');
@@ -63,20 +66,24 @@ class TestPresenter extends Presenter
 	{
 		$form = $this->resultFormFactory->create($this->question);
 		$form->onSuccess[] = function (int $questionId, int $answerId) {
-			(new Client())->request('POST', ApiHelper::getUri('test/save-answer'), [
+			$response = (new Client())->request('POST', ApiHelper::getUri('test/save-answer'), [
 				RequestOptions::JSON => [
 					"code" => $this->code,
 					"answer_id" => $answerId,
 					"question_id" => $questionId
 				]
 			]);
-			$this->redirect("this");
+			if ($response->getBody()->getContents() === true) {
+				$this->redirect("Test:question", [$this->code, $this->email]);
+			} else {
+				$this->redirect("Test:result", [$this->code, $this->email]);
+			}
 		};
 		return $form;
 	}
 
 	public function renderQuestion(): void
 	{
-		$this->template->question = $this->question;
+		$this->template->question = $this->question ?? null;
 	}
 }

@@ -55,9 +55,9 @@ class TestFacade
 		return $this->model->questions->findAll()->fetchPairs('id');
 	}
 
-	public function getQuestionForTest(): array
+	public function getQuestionForTest(string $code): array
 	{
-		return $this->model->questions->getRandomQuestion();
+		return $this->model->questions->getRandomQuestion($code);
 	}
 
 	public function getQuestionEntity(array $dbRowData): ?Question
@@ -75,8 +75,10 @@ class TestFacade
 			$entity->text = $answer->text;
 			$result[] = $entity;
 		}
-		$question->answers = $result;
-		return $question;
+		if (isset($question)) {
+			$question->answers = $result;
+		}
+		return $question ?? null;
 	}
 
 	public function recordQuestion(ArrayHash $values, array $answers, ?Question $question): void
@@ -107,12 +109,18 @@ class TestFacade
 			range(1, Question::ANSWERS_COUNT);
 	}
 
-	public function saveAnswer(string $code, int $answerId, int $questionId): void
+	public function saveAnswer(string $code, int $answerId, int $questionId): bool
 	{
 		$result = new Result();
-		$result->entryCode = $this->model->entryCodes->findBy(['code' => $code])->fetch();
+		$result->entryCode = $entryCode = $this->model->entryCodes->findBy(['code' => $code])->fetch();
 		$result->answer = $this->model->answers->findById($answerId)->fetch();
 		$result->question = $this->model->questions->findById($questionId)->fetch();
 		$this->model->persistAndFlush($result);
+		return $this->getAnswersCount($entryCode->id);
+	}
+
+	public function getAnswersCount(int $entryCodeId)
+	{
+		return $this->model->results->findBy(['entry_code' => $entryCodeId])->count() < Question::QUESTIONS_COUNT;
 	}
 }
